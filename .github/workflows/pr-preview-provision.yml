@@ -40,6 +40,7 @@ jobs:
           SUBDOMAIN_NAME: pr-${{ github.event.number }}
           FORGE_PHP_VERSION: php83
           FORGE_DEPLOY_SCRIPT: ${{ vars.FORGE_DEPLOY_SCRIPT }}
+          TOKEN_GITHUB: ${{ steps.generate-token.outputs.token }}
 
           # Indicates we want to deploy using deploy keys
           FORGE_GITHUB_DEPLOY_KEY: true
@@ -51,4 +52,4 @@ jobs:
           # As the default actions token does not have permissions to create a deploy key
           GIT_TOKEN: ${{ steps.generate-token.outputs.token }}
         run: |
-          echo ${{ steps.generate-token.outputs.token }}
+          echo ${{ env.TOKEN_GITHUB }}
