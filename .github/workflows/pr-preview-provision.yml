@@ -29,8 +29,6 @@ jobs:
         with:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
-      - name: Install Harbor
-        run: git clone https://github.com/RobertBoes/laravel-harbor.git -b patch-1
       - name: Start Provisioning
         env:
           FORGE_TOKEN: ${{ secrets.FORGE_TOKEN }} # Your Forge token
@@ -53,6 +51,7 @@ jobs:
           # As the default actions token does not have permissions to create a deploy key
           GIT_TOKEN: ${{ steps.generate-token.outputs.token }}
         run: |
-          cd laravel-harbor |
-          composer install |
+          git clone https://github.com/mehrancodes/laravel-harbor.git
+          cd laravel-harbor
+          composer install
           php harbor provision
