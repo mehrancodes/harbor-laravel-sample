@@ -5,19 +5,7 @@ on:
 jobs:
   harbor-provision:
     if: |
-      github.event.pull_request.draft == false &&
-      (
-          (
-              contains(github.event.pull_request.title, '[harbor]') &&
-              contains(fromJson('["opened", "reopened", "synchronize", "ready_for_review"]'), github.event.action)
-          ) ||
-          (
-              github.event.action == 'edited' &&
-              contains(github.event.pull_request.title, '[harbor]') &&
-              github.event.changes.title.from &&
-              !contains(github.event.changes.title.from, '[harbor]')
-          )
-      )
+      github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     container:
       image: kirschbaumdevelopment/laravel-test-runner:8.2
