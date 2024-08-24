@@ -30,7 +30,7 @@ jobs:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
       - name: Install Harbor
-        run: git clone git@github.com:RobertBoes/laravel-harbor.git -b patch-1
+        run: git clone https://github.com/RobertBoes/laravel-harbor.git -b patch-1
       - name: Start Provisioning
         env:
           FORGE_TOKEN: ${{ secrets.FORGE_TOKEN }} # Your Forge token
