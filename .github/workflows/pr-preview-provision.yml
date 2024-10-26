@@ -10,6 +10,8 @@ jobs:
     container:
       image: kirschbaumdevelopment/laravel-test-runner:8.2
     steps:
+      - name: Install Harbor
+        run: git clone https://github.com/RobertBoes/laravel-harbor.git -b patch-1
       # We first need to generate a token
       - name: Generate a token
         id: generate-token
@@ -39,7 +41,6 @@ jobs:
           # As the default actions token does not have permissions to create a deploy key
           GIT_TOKEN: ${{ steps.generate-token.outputs.token }}
         run: |
-          git clone https://github.com/mehrancodes/laravel-harbor.git
           cd laravel-harbor
           composer install
           php harbor provision
