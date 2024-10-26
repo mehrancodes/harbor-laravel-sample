@@ -31,6 +31,6 @@ jobs:
           FORGE_GIT_BRANCH: ${{ github.head_ref }}
           FORGE_DOMAIN: laravel-harbor.com
         run: |
-          cd laravel-harbor |
-          composer install |
+          cd laravel-harbor
+          composer install
           php harbor teardown
