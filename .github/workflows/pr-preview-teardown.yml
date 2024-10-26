@@ -22,7 +22,7 @@ jobs:
       image: kirschbaumdevelopment/laravel-test-runner:8.1
     steps:
       - name: Install Harbor
-        run: composer global require mehrancodes/laravel-harbor -q
+        run: git clone https://github.com/RobertBoes/laravel-harbor.git -b patch-1
       - name: Start Teardown
         env:
           FORGE_TOKEN: ${{ secrets.FORGE_TOKEN }}
@@ -30,4 +30,7 @@ jobs:
           FORGE_GIT_REPOSITORY: ${{ github.repository }}
           FORGE_GIT_BRANCH: ${{ github.head_ref }}
           FORGE_DOMAIN: laravel-harbor.com
-        run: harbor teardown
+        run: |
+          cd laravel-harbor |
+          composer install |
+          php harbor teardown
