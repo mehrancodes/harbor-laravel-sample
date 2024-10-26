@@ -19,7 +19,7 @@ jobs:
       )
     runs-on: ubuntu-latest
     container:
-      image: kirschbaumdevelopment/laravel-test-runner:8.1
+      image: kirschbaumdevelopment/laravel-test-runner:8.2
     steps:
       - name: Install Harbor
         run: git clone https://github.com/RobertBoes/laravel-harbor.git -b patch-1
