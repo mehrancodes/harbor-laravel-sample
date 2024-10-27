@@ -5,18 +5,7 @@ on:
 jobs:
   harbor-teardown:
     if: |
-      github.event.pull_request.draft == false &&
-      (
-          (
-              contains(github.event.pull_request.title, '[harbor]') &&
-              github.event.action == 'closed'
-          ) ||
-          (
-              github.event.action == 'edited' &&
-              contains(github.event.changes.title.from, '[harbor]') &&
-              !contains(github.event.pull_request.title, '[harbor]')
-          )
-      )
+      github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     container:
       image: kirschbaumdevelopment/laravel-test-runner:8.2
