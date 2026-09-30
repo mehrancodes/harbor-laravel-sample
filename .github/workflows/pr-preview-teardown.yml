@@ -2,6 +2,8 @@ name: pull-request-preview-teardown
 on:
   pull_request:
     types: [closed, edited]
+env:
+  HARBOR_REF: main
 jobs:
   harbor-teardown:
     if: |
@@ -18,19 +20,33 @@ jobs:
           )
       )
     runs-on: ubuntu-latest
-    container:
-      image: kirschbaumdevelopment/laravel-test-runner:8.1
     steps:
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
       - name: Install Harbor
-        run: git clone https://github.com/RobertBoes/laravel-harbor.git -b patch-1
+        run: git clone --depth 1 -b "$HARBOR_REF" https://github.com/mehrancodes/laravel-harbor.git
       - name: Start Teardown
         env:
-          FORGE_TOKEN: ${{ secrets.FORGE_TOKEN }}
-          FORGE_SERVER: ${{ secrets.FORGE_SERVER }}
+          FORGE_TOKEN: ${{ secrets.HARBOR_V2_FORGE_TOKEN }}
+          FORGE_ORGANIZATION: ${{ vars.HARBOR_V2_FORGE_ORGANIZATION }}
+          FORGE_SERVER: ${{ secrets.HARBOR_V2_FORGE_SERVER }}
+          FORGE_DOMAIN: ${{ vars.HARBOR_V2_FORGE_DOMAIN }}
           FORGE_GIT_REPOSITORY: ${{ github.repository }}
           FORGE_GIT_BRANCH: ${{ github.head_ref }}
-          FORGE_DOMAIN: laravel-harbor.com
+          SUBDOMAIN_NAME: pr-${{ github.event.number }}
+
+          FORGE_GITHUB_DEPLOY_KEY: true
+          FORGE_GIT_REPOSITORY_URL: "git@github.com:${{ github.repository }}.git"
+          FORGE_GIT_PROVIDER: custom
+          GIT_TOKEN: ${{ steps.generate-token.outputs.token }}
         run: |
-          cd laravel-harbor |
-          composer install |
+          cd laravel-harbor
+          composer install --no-interaction --prefer-dist
           php harbor teardown
