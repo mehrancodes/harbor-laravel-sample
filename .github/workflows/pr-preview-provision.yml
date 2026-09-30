@@ -3,7 +3,7 @@ on:
   pull_request:
     types: [opened, edited, reopened, synchronize, ready_for_review]
 env:
-  HARBOR_REF: main
+  HARBOR_REF: mehrancodes/feat-gitlab-connection-review
 jobs:
   harbor-provision:
     if: |

@@ -3,7 +3,7 @@ on:
   pull_request:
     types: [closed, edited]
 env:
-  HARBOR_REF: main
+  HARBOR_REF: mehrancodes/feat-gitlab-connection-review
 jobs:
   harbor-teardown:
     if: |
