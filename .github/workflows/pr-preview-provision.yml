@@ -20,7 +20,12 @@ jobs:
               !contains(github.event.changes.title.from, '[harbor]')
           )
       )
+    concurrency:
+      group: harbor-${{ github.event.pull_request.number }}
+      cancel-in-progress: false
     runs-on: ubuntu-latest
+    container:
+      image: kirschbaumdevelopment/laravel-test-runner:8.3
     steps:
       - name: Generate a token
         id: generate-token
@@ -28,9 +33,6 @@ jobs:
         with:
           app-id: ${{ vars.HARBOR_APP_ID }}
           private-key: ${{ secrets.HARBOR_APP_PRIVATE_KEY }}
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.3'
       - name: Install Harbor
         run: git clone --depth 1 -b "$HARBOR_REF" https://github.com/mehrancodes/laravel-harbor.git
       - name: Start Provisioning
